@@ -1,17 +1,43 @@
 {% extends 'master.html' %}
 
 {% block content %}
+<h1> Event Listing</h1>
+<div class="float-end">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.name}}
+        <input type="submit" value="Save and Continue" class="btn-success" />
+    </form>
+</div>
 
-<h1>Welcome to Events Index page</h1>
 
 {% if latest_event_list %}
-<ul>
-    {% for event in latest_event_list %}
-    <li><a href="{% url 'events:detail' event.id %}">{{ event.name }}</a></li>
-    {% endfor %}
-</ul>
+    <ul>
+        {% for event in latest_event_list %}
+        <li><a href="{% url 'events:detail' event.id %}">{{ event.name }}</a></li>
+        {% endfor %}
+    </ul>
 {% else %}
-<p>No events are available.</p>
+    <p>No events are available.</p>
 {% endif %}
+
+
+<table class="table">
+    <tr>
+        <th>Event Listing</th>
+    </tr>
+    {% for event in events %}
+    <tr>
+        <td>{{ event.name }}
+            <a href="{% url 'events:update' event.id %}" class="text-success"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'events:delete' event.id %}" class="text-danger"><i class="bi bi-trash "></i></a>
+        </td>
+    </tr>
+
+
+    {% endfor %}
+</table>
+
+
 
 {% endblock %}

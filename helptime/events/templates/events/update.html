@@ -1,0 +1,51 @@
+{% extends 'master.html' %}
+
+{% block content %}
+
+<h1> Maintain Event Information </h1>
+<form method="POST" class="container-float">
+    <fieldset>
+        {% csrf_token %}
+        <div class="row">
+            <strong>{{form.name.label}}</strong>
+            {{ form.name}}
+        </div>
+        <div class="row mt-3">
+            <strong>{{form.description.label}}</strong>
+            {{ form.description}}
+        </div>
+        <div class="row mt-3">
+            <strong>{{form.organization.label}}</strong>
+            {{ form.organization}}
+        </div>
+        <div class="row mt-1">
+            <strong>{{form.primery_contact.label}}</strong>
+            {{ form.primery_contact}}
+        </div>
+        <div class="row mt-1">
+            <strong>{{form.alternate_contact.label}}</strong>
+            {{ form.alternate_contact}}
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6 form-switch-input">
+                <strong>{{form.hide_names.label}}</strong>
+                {{ form.hide_names }}
+            </div>
+            <div class="col-md-6">
+                <strong>{{form.reminder_days.label}}</strong>
+                {{ form.reminder_days}}
+            </div>
+        </div>
+
+    </fieldset>
+    <div class="mt-3">
+        <a href="{% url 'events:index' %}" class='float-right btn btn-warning pull-right'>Cancel</a>
+        <input type="submit" value="Save Updates" class='float-right btn btn-success pull-right'>
+    </div>
+</form>
+<pre>
+
+
+</pre>
+
+{% endblock %}
