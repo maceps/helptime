@@ -1,0 +1,21 @@
+{% extends 'master.html' %}
+
+{% block content %}
+
+<h1>Welcome to Event Detail page</h1>
+
+<h2>Event: {{ event.name }}</h2>
+<p> Description: {{ event.description }} p </p>
+
+<table class="table"> {{ event }}   table </table>
+
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+
+
+{% endblock %} 
+
+
+
+
