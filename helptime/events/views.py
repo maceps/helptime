@@ -31,15 +31,16 @@ def index(request):
 @login_required  #forces a login can we add other text
 def update(request, pk): 
     event = Event.objects.get(id=pk)
-    task = Task.objects.get(event_id=pk)
+   # task = Task.objects.get(event_id=pk)
     form = EventForm(instance=event)
-    taskform = TaskForm(instance=task)
+   # taskform = TaskForm(instance=task)
     if request.method == 'POST':
         form = EventForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
             return redirect('events:index')
-    return render(request, 'events/update.html', {'form':form, 'event':event, 'taskform': taskform, 'task':task})
+        #return render(request, 'events/update.html', {'form':form, 'event':event, 'taskform': taskform, 'task':task})
+    return render(request, 'events/update.html', {'form':form, 'event':event})
 
 def delete(request,pk):
     event = Event.objects.get(id=pk)
