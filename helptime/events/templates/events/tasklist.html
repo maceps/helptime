@@ -13,8 +13,8 @@
     {% csrf_token %}
     {{ task.task }}
     <div class="table-responsive">
-        <table class="">
-            <tr>
+        <table class="table">
+            <tr class="bg-info">
                 <th>Task Name</th>
                 <th>Description</th>
                 <th>Date</th>
@@ -25,7 +25,7 @@
             {% for task in tasks %}
             <tr>
                 <td>{{ task.task }}
-                    <a href="{% url 'events:taskupdate' task.id %}" class=''>edit</a>
+                    <a href="{% url 'events:taskupdate' task.id %}" class="text-success"><i class="bi bi-pencil"></i></a>
                 </td>
                 <td>{{ task.description }} </td>
                 <td>{{ task.task_date }} </td>
