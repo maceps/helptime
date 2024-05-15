@@ -1,0 +1,45 @@
+{% extends 'master.html' %}
+
+{% block content %}
+
+<h1> Maintain Task Information </h1>
+<h2>Event: {{ task.event.name }}</h2>
+<form method="POST" class="container-float">
+    {% csrf_token %}
+    <fieldset>
+        {% csrf_token %}
+        <div class="row">
+            <strong>{{form.task.label}}</strong>
+            {{ form.task }}
+        </div>
+        <div class="row mt-3">
+            <strong>{{form.description.label}}</strong>
+            {{ form.description }}
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <strong>{{form.task_date.label}}</strong>
+                {{ form.task_date}}
+            </div>
+            <div class="col-md-4">
+                <strong>{{form.start_time.label}}</strong>
+                {{ form.start_time}}
+            </div>
+            <div class="col-md-4">
+                <strong>{{form.end_time.label}}</strong>
+                {{ form.end_time}}
+            </div>
+        </div>
+        <div class="row mt-3">
+            <strong>{{form.volunteer.label}}</strong>
+            {{ form.volunteer }}
+        </div>
+
+    </fieldset>
+    <div class="mt-3">
+        <a href="{% url 'events:index' %}" class='float-right btn btn-warning'>Cancel</a>
+        <input type="submit" value="Save Updates" class='float-right btn btn-success'>
+    </div>
+</form>
+
+{% endblock %}

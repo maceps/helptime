@@ -19,6 +19,8 @@ from . import views
 app_name = "events"
 urlpatterns = [
     path("", views.index, name="index"),
-    path("update/<int:pk>", views.update, name="update"),  
-    path("delete/<int:pk>", views.delete, name="delete")
+    path("eventupdate/<int:pk>", views.eventupdate, name="eventupdate"),  
+    path("taskupdate/<int:pk>", views.taskupdate, name="taskupdate"),  
+    path("tasklist/<int:pk>", views.tasklist, name="tasklist"),  
+    path("eventdelete/<int:pk>", views.eventdelete, name="eventdelete")
 ]

@@ -29,8 +29,10 @@
     {% for event in events %}
     <tr>
         <td>{{ event.name }}
-            <a href="{% url 'events:update' event.id %}" class="text-success"><i class="bi bi-pencil"></i></a>
-            <a href="{% url 'events:delete' event.id %}" class="text-danger"><i class="bi bi-trash "></i></a>
+            <a href="{% url 'events:eventupdate' event.id %}" class="text-success"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'events:eventdelete' event.id %}" class="text-danger"><i class="bi bi-trash "></i></a>
+            <a href="{% url 'events:tasklist' event.id %}" class="text-primary"><i class="bi bi-journal-plus "></i></a>
+
         </td>
     </tr>
 

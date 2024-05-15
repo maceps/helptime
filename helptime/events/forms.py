@@ -1,5 +1,6 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import DateInput, ModelForm
+from django.contrib.admin import widgets     
 
 from .models import Event, Task
 
@@ -23,11 +24,23 @@ class EventCreateForm(forms.ModelForm):
                 attrs={'placeholder': 'New Event Name'}),
         }
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+class TimeInput(forms.TimeInput):
+    input_type = 'time'
+
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields= '__all__'
         widgets = {
             'task' :  forms.TextInput(
-                attrs={'placeholder': 'New Event Name'}),
+                attrs={'placeholder': 'New Task Name'}),
+            'task_date' : DateInput(),
+            'start_time' : TimeInput(),
+            'end_time' : TimeInput(),
         }
+
+
+

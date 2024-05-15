@@ -11,10 +11,8 @@ from django.db.models import Q
 
 def index(request):
     # standard listing
-    #todos = Todo.objects.all()  #gets data from Todo then put in the {} below
     events = Event.objects.filter(Q(created_by=request.user) | Q(created_by__isnull=True))
 
-    # Add a new Todo .. returns to update
     form = EventCreateForm()
     if request.method == 'POST':
         form = EventCreateForm(request.POST)
@@ -22,29 +20,57 @@ def index(request):
             new_item = form.save(commit=False)
             new_item.created_by = request.user
             new_item = form.save()
-            #re(turn redirect('crud:index')
-            return redirect ('events:update', new_item.pk)
-            #return render(request, 'crud/update.html', {'form': form, 'todo':new_item.pk})
-    
+            return redirect ('events:eventupdate', new_item.pk)
     return render(request, 'events/index.html', {'events' : events, 'form':form}) #to a template empty {} if no context 
 
 @login_required  #forces a login can we add other text
-def update(request, pk): 
+def eventupdate(request, pk): 
     event = Event.objects.get(id=pk)
-   # task = Task.objects.get(event_id=pk)
     form = EventForm(instance=event)
-   # taskform = TaskForm(instance=task)
+   
     if request.method == 'POST':
         form = EventForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
             return redirect('events:index')
-        #return render(request, 'events/update.html', {'form':form, 'event':event, 'taskform': taskform, 'task':task})
-    return render(request, 'events/update.html', {'form':form, 'event':event})
+    return render(request, 'events/eventupdate.html', {'form':form, 'event':event})
 
-def delete(request,pk):
+def eventdelete(request,pk):
     event = Event.objects.get(id=pk)
+
     if request.method == 'POST':
         event.delete()
         return redirect('events:index')
-    return render (request, 'events/delete.html', {'event': event})
+    return render (request, 'events/eventdelete.html', {'event': event})
+
+
+def tasklist(request, pk):
+    tasks = Task.objects.filter(event_id=pk)
+    events = Event.objects.filter(id=pk)
+    event_id = pk
+
+    form = TaskForm()
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            new_item = form.save(commit=False)
+            new_item.event_id = event_id
+            new_item = form.save()
+            return redirect ('events:tasklist', event_id)
+        
+    return render(request, 'events/tasklist.html', { 'tasks': tasks , 'events' : events, 'form':form})
+    
+
+def taskupdate(request, pk): 
+    task = Task.objects.get(id=pk)
+    form = TaskForm(instance=task)
+    event_id = task.event_id
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            new_item = form.save(commit=False)
+            new_item.event_id = event_id
+            new_item = form.save()
+            return redirect ('events:tasklist', event_id)
+    return render(request, 'events/taskupdate.html', {'form': form, 'task':task})
