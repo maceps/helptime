@@ -29,7 +29,8 @@ def index(request):
     return render(request, 'events/index.html', context) 
 
 
-@login_required  #forces a login can we add other text
+
+@login_required  #forces a login
 def dashboard(request):
     # Authenticated user listing
     events = Event.objects.filter(Q(created_by=request.user))
@@ -46,9 +47,13 @@ def dashboard(request):
   
 
 
-@login_required  #forces a login can we add other text
+#@login_required  #forces a login
 def eventupdate(request, pk): 
-    event = Event.objects.get(id=pk)
+    # Access to events that user has created or has no creator
+    if request.user.is_authenticated:
+        event = Event.objects.get(Q(id=pk), (Q(created_by=request.user) | Q(created_by=None)) )
+    else:
+        event = Event.objects.get(Q(id=pk), (Q(created_by=None)) )
     form = EventForm(instance=event)
    
     if request.method == 'POST':
@@ -56,7 +61,9 @@ def eventupdate(request, pk):
 
         if form.is_valid():
             if event.created_by is None: # Set the created by field if null
-                event.created_by = request.user
+                #if the user authenticated then ..
+                if request.user.is_authenticated:
+                    event.created_by = request.user
             form.save()
             return redirect('events:index')
     return render(request, 'events/eventupdate.html', {'form':form, 'event':event})

@@ -29,15 +29,24 @@
 
 <table class="table">
     <tr>
-        <th>Organization</th>
         <th>Event Name</th>
         <th>Start Date</th>
         <th>End Date</th>
     </tr>
     {% for event in events %}
     <tr>
-        <td>{{ event.organization}}</td>
-        <td>{{ event.name }} </td>
+        <td>{{ event.name }} 
+            {% if event.created_by is None %}
+              {% if user.is_authenticated %}
+                <a href="{% url 'events:eventupdate' event.id %}" class="text-success"><i class="bi bi-pencil"></i></a>
+                <a href="{% url 'events:eventdelete' event.id %}" class="text-danger"><i class="bi bi-trash "></i></a>
+              {% else %}
+                <a class="text-warning small" href="{% url 'login' %}?next={{ request.path }}">Login to claim this event</a>
+            
+              {% endif %}
+            {% endif %}
+        </td>
+            
         <td>{{ event.start_task_date | date:"m/d/Y" }} </td>
         <td>{{ event.end_task_date | date:"m/d/Y"}} </td>
       
