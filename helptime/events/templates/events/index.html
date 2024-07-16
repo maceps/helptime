@@ -38,8 +38,8 @@
     <tr>
         <td>{{ event.organization}}</td>
         <td>{{ event.name }} </td>
-        <td>{{ event.start_task_date }} </td>
-        <td>{{ event.end_task_date }} </td>
+        <td>{{ event.start_task_date | date:"m/d/Y" }} </td>
+        <td>{{ event.end_task_date | date:"m/d/Y"}} </td>
       
     </tr>
 

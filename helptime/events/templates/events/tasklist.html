@@ -28,7 +28,7 @@
                     <a href="{% url 'events:taskupdate' task.id %}" class="text-success"><i class="bi bi-pencil"></i></a>
                 </td>
                 <td>{{ task.description }} </td>
-                <td>{{ task.task_date }} </td>
+                <td>{{ task.task_date | date:"m/d/Y"}} </td>
                 <td>{{ task.start_time }} </td>
                 <td>{{ task.end_time }}</td>
                 <td>{{ task.volunteer }}</td>
