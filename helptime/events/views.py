@@ -5,23 +5,46 @@ from django.urls import reverse
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from .models import Event, Task
-from .forms import EventForm, EventCreateForm, TaskForm
-from django.db.models import Q
+from .forms import EventForm, EventCreateForm, TaskForm, EventSearchForm
+from django.db.models import Q, Min, Max
 
 
 def index(request):
-    # standard listing
-    events = Event.objects.filter(Q(created_by=request.user) | Q(created_by__isnull=True))
+    form = EventSearchForm(request.GET or None)
+    
+    events = Event.objects.annotate(
+        start_task_date=Min('tasks__task_date'),
+        end_task_date=Max('tasks__task_date')
+    )
+
+    if form.is_valid():
+        filter = form.cleaned_data.get('filter')
+        events = events.filter(Q(name__icontains=filter) | Q(organization__icontains=filter))
+    
+    context = {
+        'form' : form,
+        'events' : events,
+    }
+
+    return render(request, 'events/index.html', context) 
+
+
+@login_required  #forces a login can we add other text
+def dashboard(request):
+    # Authenticated user listing
+    events = Event.objects.filter(Q(created_by=request.user))
 
     form = EventCreateForm()
     if request.method == 'POST':
         form = EventCreateForm(request.POST)
         if form.is_valid():
             new_item = form.save(commit=False)
-            new_item.created_by = request.user
+            #new_item.created_by = request.user
             new_item = form.save()
             return redirect ('events:eventupdate', new_item.pk)
-    return render(request, 'events/index.html', {'events' : events, 'form':form}) #to a template empty {} if no context 
+    return render(request, 'events/dashboard.html', {'events' : events, 'form':form}) #to a template empty {} if no context 
+  
+
 
 @login_required  #forces a login can we add other text
 def eventupdate(request, pk): 
@@ -30,7 +53,10 @@ def eventupdate(request, pk):
    
     if request.method == 'POST':
         form = EventForm(request.POST, instance=event)
+
         if form.is_valid():
+            if event.created_by is None: # Set the created by field if null
+                event.created_by = request.user
             form.save()
             return redirect('events:index')
     return render(request, 'events/eventupdate.html', {'form':form, 'event':event})

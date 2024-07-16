@@ -1,39 +1,46 @@
 {% extends 'master.html' %}
 
 {% block content %}
-<h1> Event Listing</h1>
-<div class="float-end">
-    <form action="" method="post">
-        {% csrf_token %}
-        {{form.name}}
-        <input type="submit" value="Save and Continue" class="btn-success" />
-    </form>
-</div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <h1> Event Listing</h1>
+        </div>
+        <div class="col-sm-6">
+            <div class="float-end">
+                <form method="get">
+                    <div class="input-group mb-2">
+                        {{form}}
+                        <button type="submit"> <i class="bi bi-search text-success"></i> </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
-{% if latest_event_list %}
-    <ul>
-        {% for event in latest_event_list %}
-        <li><a href="{% url 'events:detail' event.id %}">{{ event.name }}</a></li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No events are available.</p>
-{% endif %}
+
+
+
+
+
+
 
 
 <table class="table">
     <tr>
-        <th>Event Listing</th>
+        <th>Organization</th>
+        <th>Event Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
     </tr>
     {% for event in events %}
     <tr>
-        <td>{{ event.name }}
-            <a href="{% url 'events:eventupdate' event.id %}" class="text-success"><i class="bi bi-pencil"></i></a>
-            <a href="{% url 'events:eventdelete' event.id %}" class="text-danger"><i class="bi bi-trash "></i></a>
-            <a href="{% url 'events:tasklist' event.id %}" class="text-primary"><i class="bi bi-journal-plus "></i></a>
-
-        </td>
+        <td>{{ event.organization}}</td>
+        <td>{{ event.name }} </td>
+        <td>{{ event.start_task_date }} </td>
+        <td>{{ event.end_task_date }} </td>
+      
     </tr>
 
 

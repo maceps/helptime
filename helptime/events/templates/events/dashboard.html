@@ -1,0 +1,45 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<h1> My Dashboard</h1>
+<div class="float-end">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.name}}
+        <input type="submit" value="Save and Continue" class="btn-success" />
+    </form>
+</div>
+
+
+{% if latest_event_list %}
+    <ul>
+        {% for event in latest_event_list %}
+        <li><a href="{% url 'events:detail' event.id %}">{{ event.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No events are available.</p>
+{% endif %}
+
+
+<table class="table">
+    <tr>
+        <th>Event Listing</th>
+    </tr>
+    {% for event in events %}
+    <tr>
+        <td>{{ event.name }}
+            <a href="{% url 'events:eventupdate' event.id %}" class="text-success"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'events:eventdelete' event.id %}" class="text-danger"><i class="bi bi-trash "></i></a>
+            <a href="{% url 'events:tasklist' event.id %}" class="text-primary"><i class="bi bi-journal-plus "></i></a>
+
+        </td>
+    </tr>
+
+
+    {% endfor %}
+</table>
+
+
+
+{% endblock %}

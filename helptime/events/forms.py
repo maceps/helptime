@@ -42,5 +42,10 @@ class TaskForm(forms.ModelForm):
             'end_time' : TimeInput(),
         }
 
+class EventSearchForm(forms.Form):
+    filter = forms.CharField(required=False, 
+                             label="",
+                             widget=forms.TextInput(attrs={'placeholder':'Search',
+                                                           'class':'form-control'}))
 
 

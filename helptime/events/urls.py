@@ -19,6 +19,7 @@ from . import views
 app_name = "events"
 urlpatterns = [
     path("", views.index, name="index"),
+    path("dashboard", views.dashboard, name="dashboard"),
     path("eventupdate/<int:pk>", views.eventupdate, name="eventupdate"),  
     path("taskupdate/<int:pk>", views.taskupdate, name="taskupdate"),  
     path("tasklist/<int:pk>", views.tasklist, name="tasklist"),  
