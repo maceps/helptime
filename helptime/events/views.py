@@ -65,7 +65,9 @@ def eventupdate(request, pk):
                 if request.user.is_authenticated:
                     event.created_by = request.user
             form.save()
-            return redirect('events:index')
+            if 'ToTasks' in request.POST:
+                return redirect('events:tasklist', pk=event.id)
+            return redirect('events:dashboard')
     return render(request, 'events/eventupdate.html', {'form':form, 'event':event})
 
 def eventdelete(request,pk):

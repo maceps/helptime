@@ -1,15 +1,20 @@
 {% extends 'master.html' %}
 
 {% block content %}
+<div class="row">
+    <div class="col-md-10">
+        <h1> Task List :{% with event=events|first %}
+            <strong>{{ event.name}}</strong>
+        </h1>
+    </div>
+    <div class="col-md-2">
+        <a href="{% url 'events:eventupdate' event.id %}" class='btn btn-warning float-end'>Cancel and Return</a>
+    </div>
+</div>
 
-<h1> Task List :{% with event=events|first %}
-    <strong>{{ event.name}}</strong>
-    {% endwith %}
-</h1>
+ {% endwith %}
 
-
-
-<form method="POST" class="">
+ <form method="POST" class="">
     {% csrf_token %}
     {{ task.task }}
     <div class="table-responsive">
@@ -35,9 +40,6 @@
             </tr>
 
             {% endfor %} <div class="mt-3 float-end">
-                <a href="{% url 'events:index' %}" class='btn btn-warning pull-right'>Cancel and Return</a>
-
-
         </table>
     </div>
 

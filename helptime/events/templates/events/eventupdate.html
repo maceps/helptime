@@ -39,8 +39,15 @@
 
     </fieldset>
     <div class="mt-3">
-        <a href="{% url 'events:index' %}" class='float-right btn btn-warning pull-right'>Cancel</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'events:dashboard' %}" class='float-right btn btn-warning pull-right'>Cancel</a>
+        {% else %}
+            <a href="{% url 'events:index' %}" class='float-right btn btn-warning pull-right'>Cancel</a>
+        {% endif %}
+        
         <input type="submit" value="Save Updates" class='float-right btn btn-success pull-right'>
+        <input type="submit" name="ToTasks" value="Maintain Tasks" class='float-right btn btn-success pull-right'>
+
     </div>
 </form>
 
