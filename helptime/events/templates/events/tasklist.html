@@ -8,7 +8,7 @@
         </h1>
     </div>
     <div class="col-md-2">
-        <a href="{% url 'events:eventupdate' event.id %}" class='btn btn-warning float-end'>Cancel and Return</a>
+        <a href="{{request.META.HTTP_REFERER}}" class='btn btn-warning float-end'>Go Back</a>
     </div>
 </div>
 

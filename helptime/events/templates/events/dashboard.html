@@ -11,12 +11,8 @@
 </div>
 
 
-{% if latest_event_list %}
-    <ul>
-        {% for event in latest_event_list %}
-        <li><a href="{% url 'events:detail' event.id %}">{{ event.name }}</a></li>
-        {% endfor %}
-    </ul>
+{% if events %}
+    <p>These are events your created</p>
 {% else %}
     <p>No events are available.</p>
 {% endif %}
@@ -24,16 +20,24 @@
 
 <table class="table">
     <tr>
-        <th>Event Listing</th>
+        <th>Event Name</th>
+        <th># Tasks</th>
+        <th>Start Date</th>
+        <th>End Date</th>
     </tr>
     {% for event in events %}
     <tr>
         <td>{{ event.name }}
             <a href="{% url 'events:eventupdate' event.id %}" class="text-success"><i class="bi bi-pencil"></i></a>
             <a href="{% url 'events:eventdelete' event.id %}" class="text-danger"><i class="bi bi-trash "></i></a>
-            <a href="{% url 'events:tasklist' event.id %}" class="text-primary"><i class="bi bi-journal-plus "></i></a>
+            
 
         </td>
+        <td><a href="{% url 'events:tasklist' event.id %}" class="text-primary">{{ event.count_task }}</a></td>
+        <td>{{ event.start_task_date | date:"m/d/Y" }} </td>
+        <td>{{ event.end_task_date | date:"m/d/Y"}} </td>
+        
+
     </tr>
 
 

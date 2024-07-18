@@ -6,7 +6,7 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from .models import Event, Task
 from .forms import EventForm, EventCreateForm, TaskForm, EventSearchForm
-from django.db.models import Q, Min, Max
+from django.db.models import Q, Min, Max, Count
 
 
 def index(request):
@@ -29,12 +29,14 @@ def index(request):
     return render(request, 'events/index.html', context) 
 
 
-
 @login_required  #forces a login
 def dashboard(request):
     # Authenticated user listing
-    events = Event.objects.filter(Q(created_by=request.user))
-
+    events = Event.objects.filter(Q(created_by=request.user)).annotate(
+        start_task_date=Min('tasks__task_date'),
+        end_task_date=Max('tasks__task_date'),
+        count_task=Count('tasks'))
+    
     form = EventCreateForm()
     if request.method == 'POST':
         form = EventCreateForm(request.POST)
@@ -45,7 +47,6 @@ def dashboard(request):
             return redirect ('events:eventupdate', new_item.pk)
     return render(request, 'events/dashboard.html', {'events' : events, 'form':form}) #to a template empty {} if no context 
   
-
 
 #@login_required  #forces a login
 def eventupdate(request, pk): 
@@ -67,18 +68,19 @@ def eventupdate(request, pk):
             form.save()
             if 'ToTasks' in request.POST:
                 return redirect('events:tasklist', pk=event.id)
-            return redirect('events:dashboard')
     return render(request, 'events/eventupdate.html', {'form':form, 'event':event})
 
+@login_required  #forces a login
 def eventdelete(request,pk):
     event = Event.objects.get(id=pk)
 
     if request.method == 'POST':
         event.delete()
-        return redirect('events:index')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     return render (request, 'events/eventdelete.html', {'event': event})
 
 
+@login_required  #forces a login
 def tasklist(request, pk):
     tasks = Task.objects.filter(event_id=pk)
     events = Event.objects.filter(id=pk)
@@ -91,11 +93,12 @@ def tasklist(request, pk):
             new_item = form.save(commit=False)
             new_item.event_id = event_id
             new_item = form.save()
-            return redirect ('events:tasklist', event_id)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+            #return redirect ('events:tasklist', event_id)
         
     return render(request, 'events/tasklist.html', { 'tasks': tasks , 'events' : events, 'form':form})
     
-
+@login_required  #forces a login
 def taskupdate(request, pk): 
     task = Task.objects.get(id=pk)
     form = TaskForm(instance=task)

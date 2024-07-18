@@ -9,7 +9,7 @@
 </h4>
 
 
-<a href="{% url 'events:index' %}">Cancel - do NOT delete</a></div>
+<a href="{{request.META.HTTP_REFERER}}">Cancel - do NOT delete</a></div>
 
 <form method="POST" class="form container">
     {% csrf_token %}
