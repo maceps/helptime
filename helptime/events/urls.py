@@ -23,5 +23,6 @@ urlpatterns = [
     path("eventupdate/<int:pk>", views.eventupdate, name="eventupdate"),  
     path("taskupdate/<int:pk>", views.taskupdate, name="taskupdate"),  
     path("tasklist/<int:pk>", views.tasklist, name="tasklist"),  
-    path("eventdelete/<int:pk>", views.eventdelete, name="eventdelete")
+    path("eventdelete/<int:pk>", views.eventdelete, name="eventdelete"),
+    path("volunteer/<int:pk>", views.volunteer, name="volunteer")
 ]

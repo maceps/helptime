@@ -1,0 +1,50 @@
+{% extends 'master.html' %}
+
+{% block content %}
+
+<h1>Signup and Volunteer</h1>
+
+{% with event=events|first %}
+    <h2>Event: {{ event.name }}</h2>
+    <p> Description: {{ event.description }} </p>
+{% endwith %}
+
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+ 
+
+<form method="POST" class="">
+    {% csrf_token %}
+    <div class="table-responsive">
+        <table class="table">
+            <tr class="bg-info">
+                <th>Task Name</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Volunteer</th>
+            </tr>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.task }}</td>
+                <td>{{ task.description }} </td>
+                <td>{{ task.task_date | date:"m/d/Y"}} </td>
+                <td>{{ task.start_time }} </td>
+                <td>{{ task.end_time }}</td>
+                <td>{{ form.volunteer }}</td>
+            </tr>
+
+            {% endfor %} <div class="mt-3 float-end">
+        </table>
+    </div>
+    <input type="submit" value="Save" class="btn-success" />
+</form>
+
+
+
+{% endblock %} 
+
+
+
+

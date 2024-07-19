@@ -100,15 +100,34 @@ def tasklist(request, pk):
     
 @login_required  #forces a login
 def taskupdate(request, pk): 
-    task = Task.objects.get(id=pk)
-    form = TaskForm(instance=task)
-    event_id = task.event_id
+    tasks = Task.objects.get(id=pk)
+    form = TaskForm(instance=tasks)
+    event_id = tasks.event_id
 
     if request.method == 'POST':
-        form = TaskForm(request.POST, instance=task)
+        form = TaskForm(request.POST, instance=tasks)
         if form.is_valid():
             new_item = form.save(commit=False)
             new_item.event_id = event_id
             new_item = form.save()
             return redirect ('events:tasklist', event_id)
-    return render(request, 'events/taskupdate.html', {'form': form, 'task':task})
+    return render(request, 'events/taskupdate.html', {'form': form, 'tasks':tasks})
+
+def volunteer(request,pk):
+    tasks = Task.objects.filter(event_id=pk)
+    events = Event.objects.filter(id=pk)
+    event_id = pk
+
+    form = TaskForm()
+    form.volunteer = "tru"
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            new_item = form.save(commit=False)
+            new_item.event_id = event_id
+            new_item.volunteer = "try"
+            new_item = form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+            #return redirect ('events:tasklist', event_id)
+        
+    return render(request, 'events/volunteer.html', { 'tasks': tasks , 'events' : events, 'form':form})

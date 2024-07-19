@@ -30,6 +30,8 @@
         <td>{{ event.name }}
             <a href="{% url 'events:eventupdate' event.id %}" class="text-success"><i class="bi bi-pencil"></i></a>
             <a href="{% url 'events:eventdelete' event.id %}" class="text-danger"><i class="bi bi-trash "></i></a>
+            <a href="{% url 'events:volunteer' event.id %}" class="text-success"><i class="bi bi-person-raised-hand h4 text-success"></i>
+
             
 
         </td>
